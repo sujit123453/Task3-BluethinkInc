@@ -15,6 +15,17 @@ For a **production-level banking system** using **Microservices Architecture**, 
 
 ---
 
+ports: account-service -> 8081
+customer-service -> 8082
+notification-service -> 8083
+card-service -> 8084
+loan-service -> 8085
+authentication-authorization-service -> 8086
+audio-logging-service -> 8087
+payment-service -> 8088
+transaction-service -> 8089
+fraud-detection-service -> 8090
+
 # Overall Architecture
 
 ```
