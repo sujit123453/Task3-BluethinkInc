@@ -1,7 +1,7 @@
 package com.bluethinkInc.authentication.authorization_service.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @Email(message = "Invalid email")
-    @NotBlank(message = "Email is required")
-    private String email;
 
-    @NotBlank(message = "Password is required")
-    private String password;
+    @Pattern(regexp = "^\\d{10}$", message = "Phone must be 10 digits")
+    @NotBlank(message = "Phone is required")
+    private String phone;
 
     // optional: if client already has a token, it may send it here to be validated and reused
     private String existingToken;

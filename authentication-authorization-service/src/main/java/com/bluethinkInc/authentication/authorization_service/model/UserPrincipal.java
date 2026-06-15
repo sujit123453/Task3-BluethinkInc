@@ -22,15 +22,15 @@ public class UserPrincipal implements UserDetails, Serializable {
     private final Long id;
     private final String name;
     private final String email; // used as username
-    private final String password;
+    private final String phone;
     private final Role role;
     private final boolean active;
 
-    public UserPrincipal(Long id, String name, String email, String password, Role role, boolean active) {
+    public UserPrincipal(Long id, String name, String email, String phone, Role role, boolean active) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.phone = phone;
         this.role = role;
         this.active = active;
     }
@@ -40,7 +40,8 @@ public class UserPrincipal implements UserDetails, Serializable {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
+//                user.getPassword(),
+                user.getPhone(),
                 user.getRole(),
                 Boolean.TRUE.equals(user.getIsActive())
         );
@@ -58,6 +59,7 @@ public class UserPrincipal implements UserDetails, Serializable {
         return role;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Map enum role to a single granted authority (e.g. ROLE_CUSTOMER)
@@ -67,13 +69,13 @@ public class UserPrincipal implements UserDetails, Serializable {
 
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 
     @Override
     public String getUsername() {
         // Use email as the principal username
-        return email;
+        return phone;
     }
 
     @Override

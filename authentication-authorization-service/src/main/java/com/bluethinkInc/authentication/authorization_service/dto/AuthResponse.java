@@ -13,6 +13,8 @@ public class AuthResponse {
     private Long id;
     private String name;
     private String email;
+    private String phone;
     private Role role;
+    private String otp;  // For testing in Postman - remove in production
 }
 
