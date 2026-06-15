@@ -1,0 +1,264 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< com.bluethinkInc:customer-service >------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ customer-service ---
+[INFO] Deleting C:\task3-bluethinkInc\customer-service\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ customer-service ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ customer-service ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 21] to target\classes
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by lombok.permit.Permit
+WARNING: Please consider reporting this to the maintainers of class lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[5,26] package jakarta.validation does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[3,38] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[3,26] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[3,26] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[23,61] cannot find symbol
+  symbol:   class Valid
+  location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[65,84] cannot find symbol
+  symbol:   class Valid
+  location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[71,86] cannot find symbol
+  symbol:   class Valid
+  location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[13,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateKycRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[16,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateKycRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[13,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[16,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[19,6] cannot find symbol
+  symbol:   class Pattern
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[20,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[23,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[26,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[29,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[32,6] cannot find symbol
+  symbol:   class Pattern
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[33,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[36,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[39,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[42,6] cannot find symbol
+  symbol:   class NotNull
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[43,6] cannot find symbol
+  symbol:   class Positive
+  location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[15,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[18,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[21,6] cannot find symbol
+  symbol:   class Email
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[22,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[25,6] cannot find symbol
+  symbol:   class Pattern
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[26,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[29,6] cannot find symbol
+  symbol:   class NotNull
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[32,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[35,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[38,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[41,6] cannot find symbol
+  symbol:   class Pattern
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[42,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[45,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[48,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[51,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[54,6] cannot find symbol
+  symbol:   class NotBlank
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[57,6] cannot find symbol
+  symbol:   class NotNull
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[58,6] cannot find symbol
+  symbol:   class Positive
+  location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[INFO] 40 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.323 s
+[INFO] Finished at: 2026-06-12T14:36:18+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project customer-service: Compilation failure: Compilation failure: 
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[5,26] package jakarta.validation does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[3,38] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[3,26] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[3,26] package jakarta.validation.constraints does not exist
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[23,61] cannot find symbol
+[ERROR]   symbol:   class Valid
+[ERROR]   location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[65,84] cannot find symbol
+[ERROR]   symbol:   class Valid
+[ERROR]   location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/controller/CustomerController.java:[71,86] cannot find symbol
+[ERROR]   symbol:   class Valid
+[ERROR]   location: class com.bluethinkInc.customer_service.controller.CustomerController
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[13,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateKycRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateKycRequest.java:[16,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateKycRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[13,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[16,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[19,6] cannot find symbol
+[ERROR]   symbol:   class Pattern
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[20,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[23,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[26,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[29,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[32,6] cannot find symbol
+[ERROR]   symbol:   class Pattern
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[33,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[36,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[39,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[42,6] cannot find symbol
+[ERROR]   symbol:   class NotNull
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/UpdateCustomerRequest.java:[43,6] cannot find symbol
+[ERROR]   symbol:   class Positive
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.UpdateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[15,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[18,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[21,6] cannot find symbol
+[ERROR]   symbol:   class Email
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[22,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[25,6] cannot find symbol
+[ERROR]   symbol:   class Pattern
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[26,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[29,6] cannot find symbol
+[ERROR]   symbol:   class NotNull
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[32,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[35,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[38,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[41,6] cannot find symbol
+[ERROR]   symbol:   class Pattern
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[42,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[45,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[48,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[51,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[54,6] cannot find symbol
+[ERROR]   symbol:   class NotBlank
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[57,6] cannot find symbol
+[ERROR]   symbol:   class NotNull
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] /C:/task3-bluethinkInc/customer-service/src/main/java/com/bluethinkInc/customer_service/dto/CreateCustomerRequest.java:[58,6] cannot find symbol
+[ERROR]   symbol:   class Positive
+[ERROR]   location: class com.bluethinkInc.customer_service.dto.CreateCustomerRequest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

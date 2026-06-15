@@ -9,6 +9,8 @@ import com.bluethinkInc.authentication.authorization_service.repo.UserRepo;
 import com.bluethinkInc.authentication.authorization_service.service.AuthService;
 import com.bluethinkInc.authentication.authorization_service.config.JwtUtil;
 import com.bluethinkInc.authentication.authorization_service.dto.AuthResponse;
+import com.bluethinkInc.authentication.authorization_service.dto.OtpResponse;
+import com.bluethinkInc.authentication.authorization_service.service.OtpService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +21,23 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepo repo;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final JwtUtil jwtUtil;
+    private final OtpService otpService;
 
-    public AuthServiceImpl(UserRepo repo, JwtUtil jwtUtil){
+    public AuthServiceImpl(UserRepo repo, JwtUtil jwtUtil, OtpService otpService){
         this.repo = repo;
         this.jwtUtil = jwtUtil;
+        this.otpService = otpService;
     }
 
     @Override
     public UserResponseEntity<User> registerService(RegisterRequest registerRequest) {
-        if(repo.existsByEmail(registerRequest.getEmail())){
-            throw new RuntimeException("Email already exists!!!");
+        if(repo.existsByPhone(registerRequest.getPhone())){
+            throw new RuntimeException("PhoneNumber already exists!!!");
         }
         User user = new User();
-        user.setPassword(encoder.encode(registerRequest.getPassword()));
         user.setName(registerRequest.getName());
         user.setEmail(registerRequest.getEmail());
+        user.setPhone(registerRequest.getPhone());
         user.setRole(Role.CUSTOMER);
         user.setIsActive(true);
         user.setCreatedAt(LocalDateTime.now());
@@ -49,44 +53,70 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserResponseEntity<AuthResponse> loginService(LoginRequest loginRequest) {
-        var userOpt = repo.findByEmail(loginRequest.getEmail());
-        if (userOpt.isEmpty()) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        User user = userOpt.get();
-        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        if (!Boolean.TRUE.equals(user.getIsActive())) {
-            throw new RuntimeException("User account is inactive");
-        }
-
-        String token = null;
-        // if client provided an existing token, validate and reuse it if still valid and belongs to same user
-        if (loginRequest.getExistingToken() != null && !loginRequest.getExistingToken().isBlank()) {
-            String existing = loginRequest.getExistingToken().trim();
-            if (jwtUtil.validateToken(existing)) {
-                String subject = jwtUtil.getSubjectFromToken(existing);
-                if (subject != null && subject.equalsIgnoreCase(user.getEmail())) {
-                    token = existing; // reuse
-                }
-            }
-        }
-
-        if (token == null) {
-            token = jwtUtil.generateToken(user.getEmail());
-        }
-
-        AuthResponse authResponse = new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), user.getRole());
+    public UserResponseEntity<AuthResponse> loginWithPhoneService(LoginRequest loginRequest) {
+        String phone = loginRequest.getPhone();
+        String otp = otpService.generateAndSendOtp(phone);
+        
+        // Create auth response with OTP for testing
+        AuthResponse authResponse = new AuthResponse(
+                null,
+                null,
+                "Login initiated",
+                null,
+                phone,
+                Role.CUSTOMER,
+                otp  // Return OTP for testing in Postman
+        );
 
         return new UserResponseEntity<>(
-                "Login successful",
+                "OTP sent to phone number. Use it to verify.",
                 200,
                 authResponse,
-                java.time.LocalDateTime.now()
+                LocalDateTime.now()
+        );
+    }
+
+    @Override
+    public UserResponseEntity<OtpResponse> sendOtpService(String phone) {
+        String otp = otpService.generateAndSendOtp(phone);
+        OtpResponse otpResponse = new OtpResponse(
+                "OTP sent successfully",
+                phone,
+                true,
+                otp
+        );
+        return new UserResponseEntity<>(
+                "OTP sent successfully",
+                200,
+                otpResponse,
+                LocalDateTime.now()
+        );
+    }
+
+    @Override
+    public UserResponseEntity<AuthResponse> verifyOtpService(String phone, String otp) {
+        boolean isValid = otpService.verifyOtp(phone, otp);
+        
+        if (!isValid) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        String token = jwtUtil.generateToken(phone);
+        AuthResponse authResponse = new AuthResponse(
+                token,
+                null,
+                "OTP User",
+                null,
+                phone,
+                Role.CUSTOMER,
+                null
+        );
+
+        return new UserResponseEntity<>(
+                "OTP verified successfully. JWT token issued.",
+                200,
+                authResponse,
+                LocalDateTime.now()
         );
     }
 }

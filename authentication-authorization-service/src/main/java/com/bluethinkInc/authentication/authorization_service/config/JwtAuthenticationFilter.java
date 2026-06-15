@@ -33,8 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             if (jwtUtil.validateToken(token)) {
-                String email = jwtUtil.getSubjectFromToken(token);
-                Optional<User> userOpt = userRepo.findByEmail(email);
+                String phone = jwtUtil.getSubjectFromToken(token);
+                Optional<User> userOpt = userRepo.findByPhone(phone);
                 if (userOpt.isPresent()) {
                     User user = userOpt.get();
                     UserPrincipal principal = UserPrincipal.build(user);

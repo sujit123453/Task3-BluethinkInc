@@ -2,6 +2,8 @@ package com.bluethinkInc.authentication.authorization_service.model;
 
 import com.bluethinkInc.authentication.authorization_service.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,10 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String password;
+    @Pattern(regexp = "^\\d{10}$", message = "Phone must be 10 digits")
+    @NotBlank(message = "Phone is required")
+    private String phone;
+
 
     @Enumerated(EnumType.STRING)
     private Role role;
