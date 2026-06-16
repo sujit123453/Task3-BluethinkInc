@@ -1,4 +1,6 @@
 package com.bluethinkInc.account_service.enums;
 
-public class AccountType {
+public enum AccountType {
+    SAVINGS,
+    CURRENT
 }

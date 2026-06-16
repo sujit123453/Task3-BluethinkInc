@@ -1,10 +1,14 @@
 package com.bluethinkInc.account_service.model;
 
+import com.bluethinkInc.account_service.enums.AccountStatus;
+import com.bluethinkInc.account_service.enums.AccountType;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -36,4 +40,5 @@ public class Account {
 
     private boolean kycVerified;
 
-    private boolean act
+    private boolean act;
+}
