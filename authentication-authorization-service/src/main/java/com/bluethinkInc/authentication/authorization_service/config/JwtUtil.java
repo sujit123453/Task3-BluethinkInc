@@ -1,5 +1,6 @@
 package com.bluethinkInc.authentication.authorization_service.config;
 
+import com.bluethinkInc.authentication.authorization_service.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -34,21 +35,19 @@ public class JwtUtil {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-//      public String generateToken(User user) {
-//
-//           Date now = new Date();
-//           Date expiry = new Date(now.getTime() + jwtExpirationMs);
-//
-//           return Jwts.builder()
-//            .setSubject(user.getPhone())
-//            .claim("id", user.getId())
-//            .claim("email", user.getEmail())
-//            .claim("role", user.getRole().name())
-//            .setIssuedAt(now)
-//            .setExpiration(expiry)
-//            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-//            .compact();
-//      }
+
+    public String generateToken(User user) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + jwtExpirationMs);
+
+        return Jwts.builder()
+                .setSubject(user.getPhone())
+                .claim("role", user.getRole().name())
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
 
     public String getSubjectFromToken(String token) {
         Claims claims = Jwts.parserBuilder()

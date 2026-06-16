@@ -7,7 +7,7 @@ import com.bluethinkInc.account_service.dto.OpenAccountRequest;
 import com.bluethinkInc.account_service.enums.AccountStatus;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface AccountService {
     AccountResponse openAccountService(OpenAccountRequest request);
 
@@ -16,4 +16,6 @@ public interface AccountService {
     BalanceResponseDto getAccountBalanceService(String accountNumber);
 
     AccountStatusDto updateAccountStatusService(String accountNumber, AccountStatus accountStatus);
+
+    AccountResponse updateBalanceService(String accountNumber, java.math.BigDecimal newBalance);
 }

@@ -15,6 +15,7 @@ import com.bluethinkInc.account_service.utils.AccountNumberGenerator;
 import feign.FeignException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -93,5 +94,21 @@ public class AccountServiceImpl implements AccountService {
         account.setUpdatedAt(LocalDateTime.now());
         accountRepo.save(account);
         return new AccountStatusDto("Account status updated successfully", account.getAccountNumber(), accountStatus);
+    }
+
+    @Override
+    public AccountResponse updateBalanceService(String accountNumber, BigDecimal newBalance) {
+        Account account = accountRepo.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new CustomerIdNotFoundException("Account not found: " + accountNumber));
+        account.setBalance(newBalance);
+        account.setUpdatedAt(LocalDateTime.now());
+        Account saved = accountRepo.save(account);
+        return new AccountResponse(
+                saved.getAccountNumber(),
+                saved.getAccountType(),
+                saved.getAccountStatus(),
+                saved.getBalance(),
+                saved.getCurrency()
+        );
     }
 }

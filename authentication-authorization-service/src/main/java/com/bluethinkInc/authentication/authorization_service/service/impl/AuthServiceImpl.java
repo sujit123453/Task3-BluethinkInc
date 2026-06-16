@@ -96,19 +96,22 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponseEntity<AuthResponse> verifyOtpService(String phone, String otp) {
         boolean isValid = otpService.verifyOtp(phone, otp);
-        
+
         if (!isValid) {
             throw new RuntimeException("Invalid OTP");
         }
 
-        String token = jwtUtil.generateToken(phone);
+        User user = repo.findByPhone(phone)
+                .orElseThrow(() -> new RuntimeException("User not found for phone: " + phone));
+
+        String token = jwtUtil.generateToken(user);
         AuthResponse authResponse = new AuthResponse(
                 token,
                 null,
-                "OTP User",
+                user.getName(),
                 null,
                 phone,
-                Role.CUSTOMER,
+                user.getRole(),
                 null
         );
 

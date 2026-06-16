@@ -25,4 +25,6 @@ public interface CustomerService {
     CustomerResponse updateKycDetails(Long id, UpdateKycRequest request);
 
     void deleteCustomer(Long id);
+
+//    CustomerResponse getCustomerDetailsService(Long id);
 }

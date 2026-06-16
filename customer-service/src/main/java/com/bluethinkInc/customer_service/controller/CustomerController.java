@@ -33,6 +33,11 @@ public class CustomerController {
         CustomerResponse response = customerService.createCustomer(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+//    @GetMapping("/internal/{id}")
+//    public ResponseEntity<CustomerResponse> getCustomerDetails(@PathVariable Long id){
+//        CustomerResponse response = customerService.getCustomerDetailsService(id);
+//        return new ResponseEntity<>(response, HttpStatus.FOUND);
+//    }
 
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN', 'MANAGER', 'ACCOUNTANT', 'EMPLOYEE')")
     @GetMapping("/{id}")

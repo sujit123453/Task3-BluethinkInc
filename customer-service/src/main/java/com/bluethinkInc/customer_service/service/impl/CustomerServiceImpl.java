@@ -146,6 +146,12 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.save(customer);
     }
 
+//    @Override
+//    public CustomerResponse getCustomerDetailsService(Long id) {
+//        return mapToResponse(customerRepo.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id)));
+//    }
+
     private CustomerResponse mapToResponse(Customer customer) {
         return new CustomerResponse(
                 customer.getId(),
