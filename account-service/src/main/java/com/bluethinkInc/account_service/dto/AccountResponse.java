@@ -16,4 +16,5 @@ public class AccountResponse {
     private AccountStatus accountStatus;
     private BigDecimal balance;
     private String curr;
+    private Long customerId;
 }

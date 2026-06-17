@@ -62,7 +62,8 @@ public class AccountServiceImpl implements AccountService {
                 saved.getAccountType(),
                 saved.getAccountStatus(),
                 saved.getBalance(),
-                saved.getCurrency()
+                saved.getCurrency(),
+                saved.getCustomerId()
         );
     }
 
@@ -75,7 +76,8 @@ public class AccountServiceImpl implements AccountService {
                 account.getAccountType(),
                 account.getAccountStatus(),
                 account.getBalance(),
-                account.getCurrency()
+                account.getCurrency(),
+                account.getCustomerId()
         );
     }
 
@@ -108,7 +110,8 @@ public class AccountServiceImpl implements AccountService {
                 saved.getAccountType(),
                 saved.getAccountStatus(),
                 saved.getBalance(),
-                saved.getCurrency()
+                saved.getCurrency(),
+                saved.getCustomerId()
         );
     }
 }

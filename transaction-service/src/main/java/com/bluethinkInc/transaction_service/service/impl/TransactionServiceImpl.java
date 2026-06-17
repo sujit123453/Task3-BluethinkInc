@@ -15,6 +15,9 @@ import com.bluethinkInc.transaction_service.repository.TransactionRepo;
 import com.bluethinkInc.transaction_service.service.TransactionService;
 import com.bluethinkInc.transaction_service.utils.TransactionReferenceGenerator;
 import feign.FeignException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -59,6 +62,8 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponseDto withdrawAmountService(WithdrawRequestDto request) {
         AccountDetailsResponseDto account = fetchAccount(request.getFromAccountNumber());
 
+        enforceCustomerOwnership(account.getCustomerId(), "Access denied: you can only withdraw from your own account");
+
         if (account.getBalance().compareTo(request.getAmount()) < 0) {
             throw new InsufficientBalanceException(
                     "Insufficient balance in account: " + request.getFromAccountNumber());
@@ -79,6 +84,8 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponseDto transferAmountService(TransferRequestDto request) {
         AccountDetailsResponseDto sender = fetchAccount(request.getFromAccountNumber());
         fetchAccount(request.getToAccountNumber()); // validate receiver exists
+
+        enforceCustomerOwnership(sender.getCustomerId(), "Access denied: you can only transfer from your own account");
 
         if (sender.getBalance().compareTo(request.getAmount()) < 0) {
             throw new InsufficientBalanceException(
@@ -105,6 +112,19 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> history = transactionRepo
                 .findByFromAccountNumberOrToAccountNumber(accountNumber, accountNumber);
         return history.stream().map(this::toResponse).toList();
+    }
+
+    private void enforceCustomerOwnership(Long accountCustomerId, String errorMessage) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
+            Object detail = auth.getDetails();
+            Long tokenUserId = detail instanceof Integer
+                    ? ((Integer) detail).longValue()
+                    : (Long) detail;
+            if (!tokenUserId.equals(accountCustomerId)) {
+                throw new SecurityException(errorMessage);
+            }
+        }
     }
 
     private AccountDetailsResponseDto fetchAccount(String accountNumber) {

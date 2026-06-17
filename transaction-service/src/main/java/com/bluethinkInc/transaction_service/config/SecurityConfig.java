@@ -67,6 +67,7 @@ public class SecurityConfig {
                                 new UsernamePasswordAuthenticationToken(
                                     claims.getSubject(), null,
                                     List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+                            auth.setDetails(claims.get("userId"));
                             SecurityContextHolder.getContext().setAuthentication(auth);
                         }
                     } catch (Exception ignored) {}

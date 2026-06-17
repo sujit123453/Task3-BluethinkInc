@@ -24,4 +24,10 @@ public class GlobalExceptions {
         return new ResponseEntity<>(
                 new ErrorResponse(ex.getMessage(), 400, LocalDateTime.now()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorResponse> handleSecurityException(SecurityException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse(ex.getMessage(), 403, LocalDateTime.now()), HttpStatus.FORBIDDEN);
+    }
 }
