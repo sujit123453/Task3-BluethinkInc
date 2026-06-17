@@ -43,7 +43,6 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(user.getPhone())
                 .claim("role", user.getRole().name())
-                .claim("userId", user.getId())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

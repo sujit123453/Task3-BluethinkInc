@@ -1,12 +1,14 @@
 package com.bluethinkInc.transaction_service.service.impl;
 
 import com.bluethinkInc.transaction_service.config.AccountServiceClient;
+import com.bluethinkInc.transaction_service.config.CustomerServiceClient;
 import com.bluethinkInc.transaction_service.customeException.exceptions.AccountNotFoundException;
 import com.bluethinkInc.transaction_service.customeException.exceptions.InsufficientBalanceException;
 import com.bluethinkInc.transaction_service.dto.request.CreditRequestDto;
 import com.bluethinkInc.transaction_service.dto.request.TransferRequestDto;
 import com.bluethinkInc.transaction_service.dto.request.WithdrawRequestDto;
 import com.bluethinkInc.transaction_service.dto.response.AccountDetailsResponseDto;
+import com.bluethinkInc.transaction_service.dto.response.CustomerDetailsResponseDto;
 import com.bluethinkInc.transaction_service.dto.response.TransactionResponseDto;
 import com.bluethinkInc.transaction_service.enums.TransactionStatus;
 import com.bluethinkInc.transaction_service.enums.TransactionType;
@@ -29,13 +31,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepo transactionRepo;
     private final AccountServiceClient accountServiceClient;
+    private final CustomerServiceClient customerServiceClient;
     private final TransactionReferenceGenerator referenceGenerator;
 
     public TransactionServiceImpl(TransactionRepo transactionRepo,
                                    AccountServiceClient accountServiceClient,
+                                   CustomerServiceClient customerServiceClient,
                                    TransactionReferenceGenerator referenceGenerator) {
         this.transactionRepo = transactionRepo;
         this.accountServiceClient = accountServiceClient;
+        this.customerServiceClient = customerServiceClient;
         this.referenceGenerator = referenceGenerator;
     }
 
@@ -117,11 +122,9 @@ public class TransactionServiceImpl implements TransactionService {
     private void enforceCustomerOwnership(Long accountCustomerId, String errorMessage) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_CUSTOMER"))) {
-            Object detail = auth.getDetails();
-            Long tokenUserId = detail instanceof Integer
-                    ? ((Integer) detail).longValue()
-                    : (Long) detail;
-            if (!tokenUserId.equals(accountCustomerId)) {
+            String phone = (String) auth.getPrincipal();
+            CustomerDetailsResponseDto customer = customerServiceClient.getCustomerByPhone(phone);
+            if (!customer.getId().equals(accountCustomerId)) {
                 throw new SecurityException(errorMessage);
             }
         }
