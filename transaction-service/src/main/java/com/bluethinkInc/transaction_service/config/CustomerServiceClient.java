@@ -10,4 +10,7 @@ public interface CustomerServiceClient {
 
     @GetMapping("/customer/phone/{phone}")
     CustomerDetailsResponseDto getCustomerByPhone(@PathVariable("phone") String phone);
+
+    @GetMapping("/customer/internal/{id}")
+    CustomerDetailsResponseDto getCustomerById(@PathVariable("id") Long id);
 }

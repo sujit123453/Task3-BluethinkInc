@@ -2,8 +2,10 @@ package com.bluethinkInc.transaction_service.service.impl;
 
 import com.bluethinkInc.transaction_service.config.AccountServiceClient;
 import com.bluethinkInc.transaction_service.config.CustomerServiceClient;
+import com.bluethinkInc.transaction_service.config.SqsPublisher;
 import com.bluethinkInc.transaction_service.customeException.exceptions.AccountNotFoundException;
 import com.bluethinkInc.transaction_service.customeException.exceptions.InsufficientBalanceException;
+import com.bluethinkInc.transaction_service.dto.event.TransactionEventDto;
 import com.bluethinkInc.transaction_service.dto.request.CreditRequestDto;
 import com.bluethinkInc.transaction_service.dto.request.TransferRequestDto;
 import com.bluethinkInc.transaction_service.dto.request.WithdrawRequestDto;
@@ -33,15 +35,18 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountServiceClient accountServiceClient;
     private final CustomerServiceClient customerServiceClient;
     private final TransactionReferenceGenerator referenceGenerator;
+    private final SqsPublisher sqsPublisher;
 
     public TransactionServiceImpl(TransactionRepo transactionRepo,
                                    AccountServiceClient accountServiceClient,
                                    CustomerServiceClient customerServiceClient,
-                                   TransactionReferenceGenerator referenceGenerator) {
+                                   TransactionReferenceGenerator referenceGenerator,
+                                   SqsPublisher sqsPublisher) {
         this.transactionRepo = transactionRepo;
         this.accountServiceClient = accountServiceClient;
         this.customerServiceClient = customerServiceClient;
         this.referenceGenerator = referenceGenerator;
+        this.sqsPublisher = sqsPublisher;
     }
 
     @Override
@@ -57,10 +62,23 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction txn = buildTransaction(
                 null, request.getToAccountNumber(),
-                request.getAmount(), TransactionType.CREDIT,request.getPerformedBy(),
+                request.getAmount(), TransactionType.CREDIT, request.getPerformedBy(),
                 request.getDescription()
         );
-        return toResponse(transactionRepo.save(txn));
+        TransactionResponseDto response = toResponse(transactionRepo.save(txn));
+
+        CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(account.getCustomerId());
+        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
+                customer.getEmail(),
+                customer.getFirstName() + " " + customer.getLastName(),
+                customer.getPhone(),
+                request.getToAccountNumber(),
+                response.getTransactionReference(),
+                "DEPOSIT", "SUCCESS",
+                request.getAmount().doubleValue(),
+                "Your account has been credited with " + request.getAmount()
+        ));
+        return response;
     }
 
     @Override
@@ -79,16 +97,29 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction txn = buildTransaction(
                 request.getFromAccountNumber(), null,
-                request.getAmount(), TransactionType.DEBIT,request.getPerformedBy(),
+                request.getAmount(), TransactionType.DEBIT, request.getPerformedBy(),
                 request.getDescription()
         );
-        return toResponse(transactionRepo.save(txn));
+        TransactionResponseDto response = toResponse(transactionRepo.save(txn));
+
+        CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(account.getCustomerId());
+        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
+                customer.getEmail(),
+                customer.getFirstName() + " " + customer.getLastName(),
+                customer.getPhone(),
+                request.getFromAccountNumber(),
+                response.getTransactionReference(),
+                "WITHDRAW", "SUCCESS",
+                request.getAmount().doubleValue(),
+                "Your account has been debited with " + request.getAmount()
+        ));
+        return response;
     }
 
     @Override
     public TransactionResponseDto transferAmountService(TransferRequestDto request) {
         AccountDetailsResponseDto sender = fetchAccount(request.getFromAccountNumber());
-        fetchAccount(request.getToAccountNumber()); // validate receiver exists
+        fetchAccount(request.getToAccountNumber());
 
         enforceCustomerOwnership(sender.getCustomerId(), "Access denied: you can only transfer from your own account");
 
@@ -109,7 +140,20 @@ public class TransactionServiceImpl implements TransactionService {
                 request.getAmount(), TransactionType.DEBIT, request.getPerformedBy(),
                 request.getDescription()
         );
-        return toResponse(transactionRepo.save(txn));
+        TransactionResponseDto response = toResponse(transactionRepo.save(txn));
+
+        CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(sender.getCustomerId());
+        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
+                customer.getEmail(),
+                customer.getFirstName() + " " + customer.getLastName(),
+                customer.getPhone(),
+                request.getFromAccountNumber(),
+                response.getTransactionReference(),
+                "TRANSFER", "SUCCESS",
+                request.getAmount().doubleValue(),
+                "Amount " + request.getAmount() + " transferred to " + request.getToAccountNumber()
+        ));
+        return response;
     }
 
     @Override
