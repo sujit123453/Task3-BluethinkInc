@@ -114,4 +114,18 @@ public class AccountServiceImpl implements AccountService {
                 saved.getCustomerId()
         );
     }
+
+    @Override
+    public AccountResponse getAccountByCustomerIdService(Long customerId) {
+        Account account = accountRepo.findByCustomerId(customerId)
+                .orElseThrow(() -> new CustomerIdNotFoundException("No account found for customerId: " + customerId));
+        return new AccountResponse(
+                account.getAccountNumber(),
+                account.getAccountType(),
+                account.getAccountStatus(),
+                account.getBalance(),
+                account.getCurrency(),
+                account.getCustomerId()
+        );
+    }
 }

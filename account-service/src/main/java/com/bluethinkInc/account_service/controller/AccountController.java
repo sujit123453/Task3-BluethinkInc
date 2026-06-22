@@ -57,5 +57,11 @@ public class AccountController {
         AccountResponse response = accountService.updateBalanceService(accountNumber, newBalance);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/internal/customer/{customerId}")
+    public ResponseEntity<AccountResponse> getAccountByCustomerIdInternal(@PathVariable Long customerId) {
+        AccountResponse response = accountService.getAccountByCustomerIdService(customerId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
 

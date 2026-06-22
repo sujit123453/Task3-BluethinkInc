@@ -18,4 +18,6 @@ public interface AccountService {
     AccountStatusDto updateAccountStatusService(String accountNumber, AccountStatus accountStatus);
 
     AccountResponse updateBalanceService(String accountNumber, java.math.BigDecimal newBalance);
+
+    AccountResponse getAccountByCustomerIdService(Long customerId);
 }
