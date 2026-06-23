@@ -1,8 +1,6 @@
 package com.bluethinkInc.notification_service.service.impl;
 
-import com.bluethinkInc.notification_service.dto.AccountEventDto;
-import com.bluethinkInc.notification_service.dto.AuthEventDto;
-import com.bluethinkInc.notification_service.dto.TransactionEventDto;
+import com.bluethinkInc.notification_service.dto.*;
 import com.bluethinkInc.notification_service.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,5 +113,102 @@ public class NotificationServiceImpl implements NotificationService {
         // smsService.sendSms(event.getPhone(), smsMessage);
 
         log.info("Transfer SMS sent to {} : {}", event.getPhone(), smsMessage);
+    }
+
+    @Override
+    public void handleLoanAppliedEvent(LoanEventDto event) {
+
+        String subject = "Loan Application Received";
+
+        String body = "Dear " + event.getCustomerName() + ",\n\n"
+                + "Your loan application has been received successfully.\n"
+                + "Loan Amount: ₹" + event.getAmount() + "\n"
+                + "Tenure: " + event.getTenureMonths() + " months\n"
+                + "Interest Rate: " + event.getInterestRate() + "%\n"
+                + "Status: " + event.getLoanStatus() + "\n\n"
+                + "Thank you for banking with us.";
+
+//        emailService.sendEmail(event.getEmail(), subject, body);
+//        smsService.sendSms(event.getPhone(), event.getMessage());
+    }
+
+    @Override
+    public void handleLoanApprovedEvent(LoanEventDto event) {
+
+        String subject = "Loan Approved";
+
+        String body = "Dear " + event.getCustomerName() + ",\n\n"
+                + "Congratulations! Your loan has been approved.\n"
+                + "Loan ID: " + event.getLoanId() + "\n"
+                + "Amount: ₹" + event.getAmount() + "\n"
+                + "Tenure: " + event.getTenureMonths() + " months\n"
+                + "Interest Rate: " + event.getInterestRate() + "%\n"
+                + "Status: " + event.getLoanStatus() + "\n\n"
+                + "Thank you for banking with us.";
+
+//        emailService.sendEmail(event.getEmail(), subject, body);
+//        smsService.sendSms(event.getPhone(), event.getMessage());
+    }
+
+    @Override
+    public void handleEmiPaidEvent(LoanEventDto event) {
+
+        String subject = "EMI Payment Successful";
+
+        String body = "Dear " + event.getCustomerName() + ",\n\n"
+                + "Your EMI payment has been received successfully.\n"
+                + "Loan ID: " + event.getLoanId() + "\n"
+                + "Outstanding Loan Amount: ₹" + event.getAmount() + "\n"
+                + "Status: " + event.getLoanStatus() + "\n\n"
+                + "Thank you for banking with us.";
+
+//        emailService.sendEmail(event.getEmail(), subject, body);
+//        smsService.sendSms(event.getPhone(), event.getMessage());
+    }
+
+    @Override
+    public void handleCardIssueEvent(CardEventDto event) {
+
+        String smsMessage =
+                "Dear " + event.getCustomerName() +
+                        ", your " + event.getCardType() +
+                        " card ending with "
+                        + event.getCardNumber()
+                        .substring(event.getCardNumber().length() - 4)
+                        + " has been issued successfully. Status: "
+                        + event.getStatus();
+
+        log.info("Card Issue Notification sent to {} : {}",
+                event.getMobileNumber(), smsMessage);
+    }
+
+    @Override
+    public void handleBlockCardEvent(CardEventDto event) {
+
+        String smsMessage =
+                "Dear " + event.getCustomerName() +
+                        ", your " + event.getCardType() +
+                        " card ending with "
+                        + event.getCardNumber()
+                        .substring(event.getCardNumber().length() - 4)
+                        + " has been blocked successfully.";
+
+        log.info("Card Block Notification sent to {} : {}",
+                event.getMobileNumber(), smsMessage);
+    }
+
+    @Override
+    public void handleCardPinChangeEvent(CardEventDto event) {
+
+        String smsMessage =
+                "Dear " + event.getCustomerName() +
+                        ", PIN for your " + event.getCardType() +
+                        " card ending with "
+                        + event.getCardNumber()
+                        .substring(event.getCardNumber().length() - 4)
+                        + " has been changed successfully.";
+
+        log.info("Card PIN Change Notification sent to {} : {}",
+                event.getMobileNumber(), smsMessage);
     }
 }
