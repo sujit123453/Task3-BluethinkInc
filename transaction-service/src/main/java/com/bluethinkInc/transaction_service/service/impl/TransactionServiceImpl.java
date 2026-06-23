@@ -19,6 +19,7 @@ import com.bluethinkInc.transaction_service.repository.TransactionRepo;
 import com.bluethinkInc.transaction_service.service.TransactionService;
 import com.bluethinkInc.transaction_service.utils.TransactionReferenceGenerator;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,16 +69,20 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionResponseDto response = toResponse(transactionRepo.save(txn));
 
         CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(account.getCustomerId());
-        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
-                customer.getEmail(),
-                customer.getFirstName() + " " + customer.getLastName(),
-                customer.getPhone(),
-                request.getToAccountNumber(),
-                response.getTransactionReference(),
-                "DEPOSIT", "SUCCESS",
-                request.getAmount().doubleValue(),
-                "Your account has been credited with " + request.getAmount()
-        ));
+        sqsPublisher.publishTransactionEvent(
+                TransactionEventDto.builder()
+                        .eventType("DEPOSIT")
+                        .customerEmail(customer.getEmail())
+                        .customerName(customer.getFirstName() + " " + customer.getLastName())
+                        .phone(customer.getPhone())
+                        .fromAccountNumber(request.getToAccountNumber())
+                        .transactionReference(response.getTransactionReference())
+                        .transactionType("DEPOSIT")
+                        .transactionStatus("SUCCESS")
+                        .amount(request.getAmount().doubleValue())
+                        .message("Your account has been credited with ₹" + request.getAmount())
+                        .build()
+        );
         return response;
     }
 
@@ -103,16 +108,20 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionResponseDto response = toResponse(transactionRepo.save(txn));
 
         CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(account.getCustomerId());
-        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
-                customer.getEmail(),
-                customer.getFirstName() + " " + customer.getLastName(),
-                customer.getPhone(),
-                request.getFromAccountNumber(),
-                response.getTransactionReference(),
-                "WITHDRAW", "SUCCESS",
-                request.getAmount().doubleValue(),
-                "Your account has been debited with " + request.getAmount()
-        ));
+        sqsPublisher.publishTransactionEvent(
+                TransactionEventDto.builder()
+                        .eventType("WITHDRAW")
+                        .customerEmail(customer.getEmail())
+                        .customerName(customer.getFirstName() + " " + customer.getLastName())
+                        .phone(customer.getPhone())
+                        .toAccountNumber(request.getFromAccountNumber())
+                        .transactionReference(response.getTransactionReference())
+                        .transactionType("DEPOSIT")
+                        .transactionStatus("SUCCESS")
+                        .amount(request.getAmount().doubleValue())
+                        .message("Your account has been credited with ₹" + request.getAmount())
+                        .build()
+        );
         return response;
     }
 
@@ -143,16 +152,21 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionResponseDto response = toResponse(transactionRepo.save(txn));
 
         CustomerDetailsResponseDto customer = customerServiceClient.getCustomerById(sender.getCustomerId());
-        sqsPublisher.publishTransactionEvent(new TransactionEventDto(
-                customer.getEmail(),
-                customer.getFirstName() + " " + customer.getLastName(),
-                customer.getPhone(),
-                request.getFromAccountNumber(),
-                response.getTransactionReference(),
-                "TRANSFER", "SUCCESS",
-                request.getAmount().doubleValue(),
-                "Amount " + request.getAmount() + " transferred to " + request.getToAccountNumber()
-        ));
+        sqsPublisher.publishTransactionEvent(
+                TransactionEventDto.builder()
+                        .eventType("TRANSFER_MONEY")
+                        .customerEmail(customer.getEmail())
+                        .customerName(customer.getFirstName() + " " + customer.getLastName())
+                        .phone(customer.getPhone())
+                        .fromAccountNumber(request.getFromAccountNumber())
+                        .toAccountNumber(request.getToAccountNumber())
+                        .transactionReference(response.getTransactionReference())
+                        .transactionType("DEPOSIT")
+                        .transactionStatus("SUCCESS")
+                        .amount(request.getAmount().doubleValue())
+                        .message("Your account has been credited with ₹" + request.getAmount())
+                        .build()
+        );
         return response;
     }
 

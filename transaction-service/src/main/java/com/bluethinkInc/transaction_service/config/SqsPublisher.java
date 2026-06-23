@@ -10,7 +10,7 @@ public class SqsPublisher {
 
     private final SqsTemplate sqsTemplate;
 
-    @Value("${spring.cloud.aws.sqs.queue-url}")
+    @Value("${aws.sqs.transaction-queue-url}")
     private String queueUrl;
 
     public SqsPublisher(SqsTemplate sqsTemplate) {

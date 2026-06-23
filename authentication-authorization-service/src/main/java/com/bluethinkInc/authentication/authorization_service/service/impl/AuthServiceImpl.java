@@ -1,8 +1,11 @@
 package com.bluethinkInc.authentication.authorization_service.service.impl;
 
+import com.bluethinkInc.authentication.authorization_service.config.SqsPublisher;
 import com.bluethinkInc.authentication.authorization_service.dto.LoginRequest;
 import com.bluethinkInc.authentication.authorization_service.dto.RegisterRequest;
 import com.bluethinkInc.authentication.authorization_service.dto.UserResponseEntity;
+import com.bluethinkInc.authentication.authorization_service.dto.event.UserRegisterEventDto;
+import com.bluethinkInc.authentication.authorization_service.dto.event.LoginOtpEventDto;
 import com.bluethinkInc.authentication.authorization_service.enums.Role;
 import com.bluethinkInc.authentication.authorization_service.model.User;
 import com.bluethinkInc.authentication.authorization_service.repo.UserRepo;
@@ -22,11 +25,14 @@ public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final JwtUtil jwtUtil;
     private final OtpService otpService;
+    private final SqsPublisher sqsPublisher;
 
-    public AuthServiceImpl(UserRepo repo, JwtUtil jwtUtil, OtpService otpService){
+    public AuthServiceImpl(UserRepo repo, JwtUtil jwtUtil, OtpService otpService,
+                           SqsPublisher sqsPublisher){
         this.repo = repo;
         this.jwtUtil = jwtUtil;
         this.otpService = otpService;
+        this.sqsPublisher = sqsPublisher;
     }
 
     @Override
@@ -43,11 +49,20 @@ public class AuthServiceImpl implements AuthService {
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
-        repo.save(user);
+        User savedUser = repo.save(user);
+        UserRegisterEventDto event = UserRegisterEventDto.builder()
+                .eventType("USER_REGISTERED")
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .phone(savedUser.getPhone())
+                .message("Welcome to Bluethink Bank. Registration completed successfully.")
+                .build();
+
+        sqsPublisher.publishAccountRegisterEvent(event);
         return new UserResponseEntity<>(
                 "Registered Successfully",
                 200,
-                user,
+                savedUser,
                 LocalDateTime.now()
         );
     }
@@ -78,7 +93,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponseEntity<OtpResponse> sendOtpService(String phone) {
+        User user = repo.findByPhone(phone)
+                .orElseThrow(() ->
+                         new RuntimeException("User not found for phone: " + phone));
         String otp = otpService.generateAndSendOtp(phone);
+        LoginOtpEventDto event = LoginOtpEventDto.builder()
+                .eventType("LOGIN_OTP")
+                .name(user.getName())
+                .phone(user.getPhone())
+                .otp(otp)
+                .message(
+                        "Dear " + user.getName() +
+                                ", your OTP for login is " + otp +
+                                ". It is valid for 5 minutes. Please do not share it with anyone."
+                )
+                .build();
+
+        sqsPublisher.publishAccountEvent(event);
         OtpResponse otpResponse = new OtpResponse(
                 "OTP sent successfully",
                 phone,

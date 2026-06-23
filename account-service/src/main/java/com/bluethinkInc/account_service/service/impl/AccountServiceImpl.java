@@ -1,11 +1,13 @@
 package com.bluethinkInc.account_service.service.impl;
 
 import com.bluethinkInc.account_service.config.CustomerServiceClient;
+import com.bluethinkInc.account_service.config.SqsPublisher;
 import com.bluethinkInc.account_service.customeException.exceptions.CustomerIdNotFoundException;
 import com.bluethinkInc.account_service.dto.AccountResponse;
 import com.bluethinkInc.account_service.dto.AccountStatusDto;
 import com.bluethinkInc.account_service.dto.BalanceResponseDto;
 import com.bluethinkInc.account_service.dto.OpenAccountRequest;
+import com.bluethinkInc.account_service.dto.event.AccountEventDto;
 import com.bluethinkInc.account_service.dto.feignClient.CustomerResponseDto;
 import com.bluethinkInc.account_service.enums.AccountStatus;
 import com.bluethinkInc.account_service.model.Account;
@@ -13,6 +15,7 @@ import com.bluethinkInc.account_service.repo.AccountRepo;
 import com.bluethinkInc.account_service.service.AccountService;
 import com.bluethinkInc.account_service.utils.AccountNumberGenerator;
 import feign.FeignException;
+import jakarta.annotation.Nonnull;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,12 +27,14 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepo accountRepo;
     private final CustomerServiceClient customerServiceClient;
     private final AccountNumberGenerator accountNumberGenerator;
+    private final SqsPublisher sqsPublisher;
 
     public AccountServiceImpl(AccountRepo accountRepo, CustomerServiceClient customerServiceClient,
-                              AccountNumberGenerator accountNumberGenerator) {
+                              AccountNumberGenerator accountNumberGenerator,SqsPublisher sqsPublisher) {
         this.accountRepo = accountRepo;
         this.customerServiceClient = customerServiceClient;
         this.accountNumberGenerator = accountNumberGenerator;
+        this.sqsPublisher = sqsPublisher;
     }
 
     @Override
@@ -57,6 +62,10 @@ public class AccountServiceImpl implements AccountService {
 
         Account saved = accountRepo.save(account);
 
+        AccountEventDto event = getAccountEventDto(saved, customer);
+
+        sqsPublisher.publicAccountEvent(event);
+
         return new AccountResponse(
                 saved.getAccountNumber(),
                 saved.getAccountType(),
@@ -65,6 +74,21 @@ public class AccountServiceImpl implements AccountService {
                 saved.getCurrency(),
                 saved.getCustomerId()
         );
+    }
+
+    @Nonnull
+    private static AccountEventDto getAccountEventDto(Account saved, CustomerResponseDto customer) {
+        AccountEventDto event = new AccountEventDto();
+        event.setEventType("ACCOUNT_CREATED");
+        event.setAccountId(saved.getId());
+        event.setAccountNumber(saved.getAccountNumber());
+        event.setCustomerId(customer.getId());
+        event.setFirstName(customer.getFirstName());
+        event.setLastName(customer.getLastName());
+        event.setAccountType(saved.getAccountType().name());
+        event.setAccountStatus(saved.getAccountStatus().name());
+        event.setBalance(saved.getBalance().doubleValue());
+        return event;
     }
 
     @Override
@@ -95,6 +119,11 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountStatus(accountStatus);
         account.setUpdatedAt(LocalDateTime.now());
         accountRepo.save(account);
+        AccountEventDto event = new AccountEventDto();
+        event.setEventType("ACCOUNT_STATUS_CHANGED:");
+        event.setAccountNumber(account.getAccountNumber());
+        event.setAccountStatus(account.getAccountStatus().name());
+        sqsPublisher.publicAccountEvent(event);
         return new AccountStatusDto("Account status updated successfully", account.getAccountNumber(), accountStatus);
     }
 
@@ -105,6 +134,10 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(newBalance);
         account.setUpdatedAt(LocalDateTime.now());
         Account saved = accountRepo.save(account);
+        AccountEventDto event = new AccountEventDto();
+        event.setEventType("ACCOUNT_BALANCE_UPDATED");
+        event.setAccountNumber(saved.getAccountNumber());
+        event.setBalance(saved.getBalance().doubleValue());
         return new AccountResponse(
                 saved.getAccountNumber(),
                 saved.getAccountType(),

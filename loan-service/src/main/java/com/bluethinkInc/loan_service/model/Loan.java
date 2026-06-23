@@ -18,6 +18,11 @@ public class Loan {
 
     private Long customerId;
 
+    private String phone;
+
+    private String email;
+
+
     private String loanType;
 
     private BigDecimal loanAmount;
