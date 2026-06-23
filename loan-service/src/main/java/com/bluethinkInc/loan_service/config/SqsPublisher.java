@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class SqsPublisher {
 
     private final SqsTemplate sqsTemplate;
-    @Value("${aws.sqs.account-queue-url}")
+    @Value("${aws.sqs.loan-queue-url}")
     private String queueUrl;
 
     public SqsPublisher(SqsTemplate sqsTemplate) {
