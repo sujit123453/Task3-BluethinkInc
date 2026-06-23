@@ -1,10 +1,14 @@
 package com.bluethinkInc.card_service.service.impl;
 
 import com.bluethinkInc.card_service.config.AccountServiceClient;
+import com.bluethinkInc.card_service.config.CustomerServiceClient;
+import com.bluethinkInc.card_service.config.SqsPublisher;
 import com.bluethinkInc.card_service.dto.CardRequestDto;
 import com.bluethinkInc.card_service.dto.CardResponseDto;
 import com.bluethinkInc.card_service.dto.ChangePinRequestDto;
+import com.bluethinkInc.card_service.dto.CustomerResponseDto;
 import com.bluethinkInc.card_service.dto.clients.AccountResponseDto;
+import com.bluethinkInc.card_service.dto.event.CardEventDto;
 import com.bluethinkInc.card_service.enums.CardStatus;
 import com.bluethinkInc.card_service.exception.CardNotFoundException;
 import com.bluethinkInc.card_service.model.Card;
@@ -22,12 +26,18 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final AccountServiceClient accountServiceClient;
     private final GenerateRandomNum generateRandomNum;
+    private final SqsPublisher sqsPublisher;
+    private final CustomerServiceClient customerServiceClient;
     public CardServiceImpl(CardRepository cardRepository,
                            AccountServiceClient accountServiceClient,
-                           GenerateRandomNum generateRandomNum){
+                           GenerateRandomNum generateRandomNum,
+                           SqsPublisher sqsPublisher,
+                           CustomerServiceClient customerServiceClient){
         this.cardRepository = cardRepository;
         this.accountServiceClient = accountServiceClient;
         this.generateRandomNum = generateRandomNum;
+        this.sqsPublisher = sqsPublisher;
+        this.customerServiceClient = customerServiceClient;
     }
     @Override
     public CardResponseDto issueCard(CardRequestDto request) {
@@ -78,6 +88,21 @@ public class CardServiceImpl implements CardService {
         card.setExpiryDate(LocalDate.now().plusYears(5));
 
         Card savedCard = cardRepository.save(card);
+        CustomerResponseDto customer = customerServiceClient.getCustomerById(account.getCustomerId());
+        CardEventDto event = new CardEventDto(
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getPhone(),
+                customer.getEmail(),
+                card.getId(),
+                card.getCardNumber(),
+                card.getCardType().name(),
+                card.getCardStatus().name(),
+                "CARD_ISSUED",
+                "Your " + card.getCardType() + " card has been issued successfully."
+        );
+
+        sqsPublisher.publicAccountEvent(event);
 
         return mapToResponse(savedCard);
     }
@@ -101,6 +126,22 @@ public class CardServiceImpl implements CardService {
         }
         card.setCardStatus(CardStatus.BLOCKED);
         card.setUpdatedAt(LocalDateTime.now());
+        CustomerResponseDto customer = customerServiceClient.getCustomerById(card.getCustomerId());
+        CardEventDto event = new CardEventDto(
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getPhone(),
+                customer.getEmail(),
+                card.getId(),
+                card.getCardNumber(),
+                card.getCardType().name(),
+                "BLOCKED",
+                "Your card ending with " +
+                        card.getCardNumber().substring(card.getCardNumber().length()-4)
+                        + " has been blocked."
+        );
+
+        sqsPublisher.publicAccountEvent(event);
         cardRepository.save(card);
     }
 
@@ -124,6 +165,21 @@ public class CardServiceImpl implements CardService {
         }
         card.setPin(request.getNewPin());
         card.setUpdatedAt(LocalDateTime.now());
+        CustomerResponseDto customer = customerServiceClient.getCustomerById(card.getCustomerId());
+        CardEventDto event = new CardEventDto(
+                customer.getCustomerId(),
+                customer.getName(),
+                customer.getPhone(),
+                customer.getEmail(),
+                card.getId(),
+                card.getCardNumber(),
+                card.getCardType().name(),
+                card.getCardStatus().name(),
+                "PIN_CHANGED",
+                "PIN changed successfully."
+        );
+
+        sqsPublisher.publicAccountEvent(event);
 
         cardRepository.save(card);
     }
