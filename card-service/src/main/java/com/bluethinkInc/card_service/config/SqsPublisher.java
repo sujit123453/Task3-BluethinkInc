@@ -13,7 +13,7 @@ public class SqsPublisher {
         this.sqsTemplate = sqsTemplate;
     }
 
-    @Value("${aws.sqs.account-queue-url}")
+    @Value("${aws.sqs.card-queue-url}")
     private String queueUrl;
 
     public void publicAccountEvent(CardEventDto event) {
