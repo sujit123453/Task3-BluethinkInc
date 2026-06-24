@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for transaction-service" enabled="true">
+      <profile name="Annotation profile for api-gateway-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -13,6 +13,11 @@
         </processorPath>
         <module name="payment-service" />
         <module name="audio-logging-service" />
+<<<<<<< Updated upstream
+=======
+        <module name="api-gateway-service" />
+        <module name="customer-service" />
+>>>>>>> Stashed changes
         <module name="registry-service" />
         <module name="loan-service" />
         <module name="fraud-detection-service" />
