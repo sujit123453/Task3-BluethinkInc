@@ -38,7 +38,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(
+                            "/v3/api-docs/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html"
+                    ).permitAll()
+                    .anyRequest().authenticated())
             .addFilterBefore(jwtRoleFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -53,6 +59,13 @@ public class SecurityConfig {
                 String authHeader = request.getHeader("Authorization");
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     try {
+                        String path =  request.getServletPath();
+
+                        if (path.startsWith("/v3/api-docs/**")
+                                || path.startsWith("/swagger-ui/**")) {
+                            filterChain.doFilter(request, response);
+                            return;
+                        }
                         String token = authHeader.substring(7);
                         byte[] keyBytes = Decoders.BASE64.decode(
                                 Base64.getEncoder().encodeToString(jwtSecret.getBytes()));

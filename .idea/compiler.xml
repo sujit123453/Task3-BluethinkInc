@@ -16,8 +16,8 @@
         <module name="customer-service" />
         <module name="api-gateway-service" />
         <module name="registry-service" />
-        <module name="loan-service" />
         <module name="fraud-detection-service" />
+        <module name="loan-service" />
         <module name="transaction-service" />
         <module name="card-service" />
         <module name="account-service" />
