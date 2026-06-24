@@ -13,7 +13,8 @@ public class TransactionEventDto {
     private String customerEmail;
     private String customerName;
     private String phone;
-    private String accountNumber;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     private String transactionReference;
     private String transactionType;
     private String transactionStatus;

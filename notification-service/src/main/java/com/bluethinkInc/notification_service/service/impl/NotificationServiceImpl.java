@@ -70,8 +70,8 @@ public class NotificationServiceImpl implements NotificationService {
         String smsMessage =
                 "Dear " + event.getCustomerName() +
                         ", your account ending with "
-                        + event.getAccountNumber()
-                        .substring(event.getAccountNumber().length() - 4)
+                        + event.getFromAccountNumber()
+                        .substring(event.getFromAccountNumber().length() - 4)
                         + " has been credited with ₹" + event.getAmount() +
                         ". Ref No: " + event.getTransactionReference() +
                         ". Status: " + event.getTransactionStatus();
@@ -88,8 +88,8 @@ public class NotificationServiceImpl implements NotificationService {
                 "Dear " + event.getCustomerName() +
                         ", ₹" + event.getAmount() +
                         " has been debited from your account ending with "
-                        + event.getAccountNumber()
-                        .substring(event.getAccountNumber().length() - 4)
+                        + event.getToAccountNumber()
+                        .substring(event.getToAccountNumber().length() - 4)
                         + ". Ref No: " + event.getTransactionReference() +
                         ". Status: " + event.getTransactionStatus();
 
@@ -105,8 +105,11 @@ public class NotificationServiceImpl implements NotificationService {
                 "Dear " + event.getCustomerName() +
                         ", ₹" + event.getAmount() +
                         " has been transferred successfully from your account ending with "
-                        + event.getAccountNumber()
-                        .substring(event.getAccountNumber().length() - 4)
+                        + event.getFromAccountNumber()
+                        .substring(event.getFromAccountNumber().length() - 4) +
+                        " to account no. ending with"
+                        + event.getToAccountNumber()
+                        .substring(event.getToAccountNumber().length() -4)
                         + ". Ref No: " + event.getTransactionReference() +
                         ". Status: " + event.getTransactionStatus();
 
@@ -130,6 +133,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 //        emailService.sendEmail(event.getEmail(), subject, body);
 //        smsService.sendSms(event.getPhone(), event.getMessage());
+        log.info("Loan Application Notification sent to {} : {}",
+                event.getEmail(), body);
     }
 
     @Override
@@ -148,6 +153,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 //        emailService.sendEmail(event.getEmail(), subject, body);
 //        smsService.sendSms(event.getPhone(), event.getMessage());
+        log.info("Loan Approved Notification sent to {} : {}",
+                event.getEmail(), body);
     }
 
     @Override
@@ -164,6 +171,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 //        emailService.sendEmail(event.getEmail(), subject, body);
 //        smsService.sendSms(event.getPhone(), event.getMessage());
+        log.info("EMI Payment Notification sent to {} : {}",
+                event.getEmail(), body);
     }
 
     @Override
